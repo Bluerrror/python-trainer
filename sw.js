@@ -1,5 +1,5 @@
 /* Python Trainer service worker — app shell + Pyodide runtime cache */
-const CACHE = 'python-trainer-v2';
+const CACHE = 'python-trainer-v3';
 const PYCACHE = 'pyodide-cache-v1';
 const ASSETS = ['./','./index.html','./content.js','./runner.js','./manifest.webmanifest',
   './icon-192.png','./icon-512.png','./apple-touch-icon.png','./fonts/nunito.woff2'];
