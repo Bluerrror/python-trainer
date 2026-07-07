@@ -34,6 +34,20 @@
         "warnings.filterwarnings('ignore', message='(?s).*non-GUI backend.*')\n"+
         "warnings.filterwarnings('ignore', message='(?s).*cannot show the figure.*')\n"+
         "warnings.filterwarnings('ignore', category=FutureWarning, message='(?s).*deprecated.*')");
+      py.runPython("__plotly_figs = []");
+      py.runPython(`
+def __setup_plotly():
+    import sys
+    if 'plotly' not in sys.modules:
+        return
+    import plotly.basedatatypes as _pbd
+    if getattr(_pbd.BaseFigure, '_pt_patched', False):
+        return
+    def _show(self, *a, **k):
+        __plotly_figs.append(self.to_json())
+    _pbd.BaseFigure.show = _show
+    _pbd.BaseFigure._pt_patched = True
+`);
       py.runPython(`
 def __grab_figs():
     import sys
@@ -55,14 +69,22 @@ def __grab_figs():
     finally{loading=null;}
   }
 
-  /* Run code; returns {ok, out, err, figs:[b64...]} */
+  /* Run code; returns {ok, out, err, figs:[b64 pngs], plotly:[fig json]} */
   window.PyRun=async function(code,status){
     try{
       const py=await ensurePyodide(status);
       status&&status(t?t('loadingPkg'):'Loading packages…');
       try{await py.loadPackagesFromImports(code);}catch(e){/* unknown imports fail at runtime instead */}
+      if(/\bplotly\b/.test(code)){
+        try{
+          // plotly.express depends on pandas + numpy under the hood
+          await py.loadPackage(['micropip','pandas','numpy']);
+          await py.runPythonAsync("import micropip\ntry:\n    import plotly\nexcept Exception:\n    await micropip.install('plotly')\n    import plotly");
+        }catch(e){}
+      }
       status&&status(t?t('running'):'Running…');
       stdoutBuf=[];
+      try{py.runPython("__plotly_figs.clear()\n__setup_plotly()");}catch(e){}
       let err=null;
       try{
         await py.runPythonAsync(code);
@@ -74,9 +96,11 @@ def __grab_figs():
       }
       let figs=[];
       try{const proxy=py.runPython('__grab_figs()');figs=proxy.toJs();proxy.destroy&&proxy.destroy();}catch(e){}
+      let plotly=[];
+      try{py.runPython("__setup_plotly()");const pj=py.runPython("import json as _j; _j.dumps(__plotly_figs)");plotly=JSON.parse(pj);}catch(e){}
       const out=stdoutBuf.join('\n');
-      if(err)return {ok:false,err:(out?out+'\n':'')+err,out:out,figs:figs};
-      return {ok:true,out:out,figs:figs};
+      if(err)return {ok:false,err:(out?out+'\n':'')+err,out:out,figs:figs,plotly:plotly};
+      return {ok:true,out:out,figs:figs,plotly:plotly};
     }catch(e){
       return {ok:false,err:'⚠️ '+String(e.message||e)+(navigator.onLine===false?'\n(offline? the first run needs internet)':''),figs:[]};
     }

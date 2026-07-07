@@ -1,5 +1,5 @@
 /* Python Trainer service worker — app shell + Pyodide runtime cache */
-const CACHE = 'python-trainer-v4';
+const CACHE = 'python-trainer-v5';
 const PYCACHE = 'pyodide-cache-v1';
 const ASSETS = ['./','./index.html','./content.js','./runner.js','./manifest.webmanifest',
   './icon-192.png','./icon-512.png','./apple-touch-icon.png','./fonts/nunito.woff2'];
@@ -16,7 +16,7 @@ self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   const url = e.request.url;
   // Pyodide + wheels: cache-first forever (immutable, versioned URLs) → offline after first run
-  if (url.includes('cdn.jsdelivr.net/pyodide')) {
+  if (url.includes('cdn.jsdelivr.net') || url.includes('files.pythonhosted.org') || url.includes('pypi.org')) {
     e.respondWith(caches.open(PYCACHE).then(async c => {
       const hit = await c.match(e.request);
       if (hit) return hit;

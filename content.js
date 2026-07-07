@@ -646,6 +646,10 @@ EXAMPLES.push(
   code:'# A drunkard walk across the plane\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nrng = np.random.default_rng(12)\nsteps = rng.choice([-1, 1], size=(4000, 2))\npath = steps.cumsum(axis=0)\n\nplt.plot(path[:,0], path[:,1], lw=.5)\nplt.scatter([0],[0], c="green", s=80, zorder=3, label="start")\nplt.scatter(path[-1,0], path[-1,1], c="red", s=80, zorder=3, label="end")\nplt.legend(); plt.title("2-D random walk (4000 steps)")\nplt.axis("equal"); plt.show()'},
  {cat:'NumPy',icon:'🎰',title:{en:'Monte-Carlo integration',de:'Monte-Carlo-Integration',fa:'انتگرال مونت-کارلو'},
   code:'# Estimate an integral by random sampling\nimport numpy as np\n\nrng = np.random.default_rng(0)\nN = 500_000\nx = rng.uniform(0, np.pi, N)\nestimate = np.pi * np.mean(np.sin(x))   # ∫ sin from 0..π = 2\nprint("MC estimate:", round(estimate, 4), " (true: 2)")'},
+ {cat:'Plotly',icon:'🖱️',title:{en:'Interactive time series (zoom & pan)',de:'Interaktive Zeitreihe (Zoom & Pan)',fa:'سری زمانی تعاملی (زوم و جابجایی)'},
+  code:'# Interactive: drag to zoom, double-click to reset (first run installs plotly)\nimport plotly.express as px\nimport pandas as pd\nimport numpy as np\ndays = pd.date_range("2024-01-01", periods=200)\nprice = 100 * (1 + pd.Series(np.random.default_rng(3).normal(.0005, .01, 200))).cumprod()\nfig = px.line(x=days, y=price.values, title="Zoomable price chart",\n              labels={"x": "date", "y": "price"})\nfig.show()'},
+ {cat:'Plotly',icon:'🌍',title:{en:'Sunburst hierarchy',de:'Sunburst-Hierarchie',fa:'نمودار سلسله‌مراتبی سان‌برست'},
+  code:'# Click a segment to zoom into it!\nimport plotly.express as px\nfig = px.sunburst(\n    names=["Tech", "Web", "Data", "Frontend", "Backend", "ML", "Viz"],\n    parents=["", "Tech", "Tech", "Web", "Web", "Data", "Data"],\n    values=[0, 40, 60, 25, 15, 35, 25],\n    title="Skill areas — click to explore")\nfig.show()'},
  {cat:'Python',icon:'🏦',title:{en:'OOP: bank account class',de:'OOP: Bankkonto-Klasse',fa:'شیءگرایی: کلاس حساب بانکی'},
   code:'# Class with methods, history and a property\nclass Account:\n    def __init__(self, owner):\n        self.owner = owner\n        self.history = []\n\n    def deposit(self, x):  self.history.append(+x); return self\n    def withdraw(self, x): self.history.append(-x); return self\n\n    @property\n    def balance(self):\n        return sum(self.history)\n\nacc = Account("Ada")\nacc.deposit(100).withdraw(30).deposit(55)\nprint(acc.owner, "→", acc.balance, "€")\nprint("transactions:", acc.history)'}
 );
@@ -749,4 +753,103 @@ const PGLIB={
  {t:'polar plot',c:'# Plot in circles instead of x/y\nimport numpy as np\nimport matplotlib.pyplot as plt\ntheta = np.linspace(0, 2*np.pi, 400)\nr = 1 + 0.6*np.sin(5*theta)\nax = plt.subplot(projection="polar")\nax.plot(theta, r, color="#7b5fe0")\nax.fill(theta, r, alpha=.25, color="#7b5fe0")\nplt.title("Polar flower"); plt.show()'},
  {t:'3-D surface',c:'# A function of two variables as a 3-D landscape\nimport numpy as np\nimport matplotlib.pyplot as plt\nx = np.linspace(-2, 2, 60)\nX, Y = np.meshgrid(x, x)\nZ = X*np.exp(-X**2-Y**2)\nax = plt.axes(projection="3d")\nax.plot_surface(X, Y, Z, cmap="viridis")\nax.view_init(30, 45)\nplt.show()'},
  {t:'log scale',c:'# Make exponential growth readable\nimport numpy as np\nimport matplotlib.pyplot as plt\nn = np.arange(1, 21)\nfig, ax = plt.subplots(1, 2, figsize=(9, 3.5))\nax[0].plot(n, 2.0**n, "o-"); ax[0].set_title("linear scale")\nax[1].semilogy(n, 2.0**n, "o-", color="#c0356b"); ax[1].set_title("log scale")\nplt.tight_layout(); plt.show()'},
+],
+'Plotly':[
+ {t:'interactive line',c:'# Interactive chart: drag to zoom, hover for values! (first run installs plotly)\nimport plotly.express as px\nimport numpy as np\nx = np.linspace(0, 10, 200)\nfig = px.line(x=x, y=np.sin(x), title="Interactive sine — try zooming!")\nfig.show()'},
+ {t:'scatter + color',c:'# Hover over points to inspect them\nimport plotly.express as px\nimport numpy as np\nrng = np.random.default_rng(0)\nn = 150\nfig = px.scatter(x=rng.normal(size=n), y=rng.normal(size=n),\n                 color=rng.random(n), size=rng.random(n)*20 + 5,\n                 title="Interactive scatter")\nfig.show()'},
+ {t:'bar chart',c:'# Interactive bars with hover labels\nimport plotly.express as px\nfig = px.bar(x=["Berlin", "Munich", "Hamburg", "Cologne"],\n             y=[3.7, 1.5, 1.9, 1.1],\n             labels={"x": "city", "y": "population (M)"},\n             title="German cities")\nfig.show()'},
+ {t:'histogram',c:'# Interactive histogram — hover shows bin counts\nimport plotly.express as px\nimport numpy as np\ndata = np.random.default_rng(2).normal(170, 8, 1000)\nfig = px.histogram(x=data, nbins=40, title="Heights")\nfig.show()'},
+ {t:'3-D scatter',c:'# Rotate this with your finger / mouse!\nimport plotly.express as px\nimport numpy as np\nrng = np.random.default_rng(1)\nt = np.linspace(0, 6*np.pi, 300)\nfig = px.scatter_3d(x=np.cos(t), y=np.sin(t), z=t,\n                    color=t, title="3-D helix — drag to rotate")\nfig.show()'},
+ {t:'pandas + plotly',c:'# DataFrame straight into an interactive chart\nimport plotly.express as px\nimport pandas as pd\ndf = pd.DataFrame({\n    "year": [2019, 2020, 2021, 2022, 2023, 2024],\n    "users": [120, 180, 260, 410, 640, 900],\n})\nfig = px.area(df, x="year", y="users", title="User growth")\nfig.show()'},
 ]};
+
+/* ================= Mimo-style interactive steps (per unit index) =================
+   gap:  tap the right token into the blank
+   order: arrange shuffled lines into a working program
+   typein: type the missing piece                                        */
+const INTER={
+0:[
+ {type:'gap',code:'x = 7\ny = 2\nprint(x __ y)   # should print 3',opts:['//','/','%','**'],a:'//'},
+ {type:'gap',code:'name = "Ada"\nprint(f"Hello, {__}!")',opts:['name','"name"','$name','print'],a:'name'},
+ {type:'order',lines:['x = 10','y = x * 2','print(y)']},
+ {type:'typein',code:'# make it print 32\nprint(2 __ 5)',a:'**'},
+],
+1:[
+ {type:'gap',code:'fruits = ["apple", "banana", "cherry"]\nprint(fruits[__])   # cherry',opts:['-1','3','2:','"cherry"'],a:'-1'},
+ {type:'gap',code:'person = {"name": "Ada"}\nprint(person[__])',opts:['"name"','name','0','{name}'],a:'"name"'},
+ {type:'order',lines:['nums = [3, 1, 2]','nums.append(4)','nums.sort()','print(nums)']},
+ {type:'typein',code:'a = [10, 20, 30, 40]\n# print [20, 30]\nprint(a[__])',a:'1:3'},
+],
+2:[
+ {type:'gap',code:'for i in __(3):\n    print(i)',opts:['range','len','list','loop'],a:'range'},
+ {type:'gap',code:'if x __ 10:\n    print("big")   # only when x is bigger',opts:['>','<','==','>='],a:'>'},
+ {type:'order',lines:['n = 0','while n < 3:','    n += 1','    print(n)']},
+ {type:'typein',code:'for i in range(10):\n    if i == 3:\n        __      # leave the loop now',a:'break'},
+],
+3:[
+ {type:'gap',code:'def double(x):\n    __ x * 2',opts:['return','print','yield','def'],a:'return'},
+ {type:'gap',code:'add = __ a, b: a + b',opts:['lambda','def','func','let'],a:'lambda'},
+ {type:'order',lines:['def greet(name):','    return f"Hi {name}"','msg = greet("Ada")','print(msg)']},
+ {type:'typein',code:'squares = [x*x __ x in range(5)]',a:'for'},
+],
+4:[
+ {type:'gap',code:'import numpy as np\na = np.__([1, 2, 3])',opts:['array','list','vector','arr'],a:'array'},
+ {type:'gap',code:'np.arange(0, 10, __)   # → [0 3 6 9]',opts:['3','4','2','9'],a:'3'},
+ {type:'order',lines:['import numpy as np','x = np.arange(6)','mask = x > 2','print(x[mask])']},
+ {type:'typein',code:'# 5 evenly spaced points from 0 to 1\nnp.__(0, 1, 5)',a:'linspace'},
+],
+5:[
+ {type:'gap',code:'data.mean(axis=__)   # one value per column',opts:['0','1','-1','"col"'],a:'0'},
+ {type:'gap',code:'rng = np.random.__(42)   # reproducible',opts:['default_rng','seed','random','init'],a:'default_rng'},
+ {type:'order',lines:['from scipy import integrate','import numpy as np','area, err = integrate.quad(np.sin, 0, np.pi)','print(round(area, 4))']},
+ {type:'typein',code:'A = np.array([[1, 2], [3, 4]])\nB = A __ A   # matrix product',a:'@'},
+],
+6:[
+ {type:'gap',code:'df[__]           # select one column',opts:['"pop"','pop','(pop)','{pop}'],a:'"pop"'},
+ {type:'gap',code:'df.__("fruit")["total"].sum()',opts:['groupby','split','bunch','sortby'],a:'groupby'},
+ {type:'order',lines:['import pandas as pd','df = pd.DataFrame({"a": [3, 1, 2]})','df = df.sort_values("a")','print(df)']},
+ {type:'typein',code:'# first row by POSITION\ndf.__[0]',a:'iloc'},
+],
+7:[
+ {type:'gap',code:'plt.__(x, y)     # line chart',opts:['plot','line','draw','chart'],a:'plot'},
+ {type:'gap',code:'plt.plot(x, y, label="sin")\nplt.__()   # show the labels box',opts:['legend','label','box','title'],a:'legend'},
+ {type:'order',lines:['import matplotlib.pyplot as plt','plt.plot([1, 2, 3], [2, 4, 9])','plt.title("growth")','plt.show()']},
+ {type:'typein',code:'# distribution of values in 30 bins\nplt.__(data, bins=30)',a:'hist'},
+],
+8:[
+ {type:'gap',code:'ts.resample(__).mean()   # weekly averages',opts:['"W"','"7d"','week','"Y"'],a:'"W"'},
+ {type:'gap',code:'ts.__(7).mean()   # smooth over 7 points',opts:['rolling','resample','window','smooth'],a:'rolling'},
+ {type:'order',lines:['import pandas as pd','days = pd.date_range("2024-01-01", periods=30)','ts = pd.Series(range(30), index=days)','print(ts.resample("W").sum())']},
+ {type:'typein',code:'# % change vs previous day\nprice.__()',a:'pct_change'},
+],
+9:[
+ {type:'gap',code:'class Dog:\n    def __init__(__, name):\n        __.name = name',opts:['self','this','me','cls'],a:'self'},
+ {type:'gap',code:'try:\n    risky()\n__ ValueError:\n    print("oops")',opts:['except','catch','error','elif'],a:'except'},
+ {type:'order',lines:['class Point:','    def __init__(self, x):','        self.x = x','p = Point(5)','print(p.x)']},
+ {type:'typein',code:'def naturals():\n    n = 0\n    while True:\n        __ n      # lazy, one at a time\n        n += 1',a:'yield'},
+],
+10:[
+ {type:'gap',code:'plt.fill_between(x, lo, hi, __=0.3)   # transparency',opts:['alpha','opacity','fade','light'],a:'alpha'},
+ {type:'gap',code:'ax2 = ax.__()   # second y-axis',opts:['twinx','copy','double','ytwin'],a:'twinx'},
+ {type:'order',lines:['fig, ax = plt.subplots()','ax.plot(x, temp, "r-")','ax2 = ax.twinx()','ax2.bar(x, rain, alpha=0.3)','plt.show()']},
+ {type:'typein',code:'# median + quartiles at a glance\nplt.__(groups)',a:'boxplot'},
+],
+11:[
+ {type:'gap',code:'x = np.linalg.__(A, b)   # solve A·x = b',opts:['solve','root','div','inv'],a:'solve'},
+ {type:'gap',code:'slope, intercept = np.polyfit(x, y, __)',opts:['1','0','2','"line"'],a:'1'},
+ {type:'order',lines:['freq = np.fft.rfftfreq(t.size, dt)','spec = np.abs(np.fft.rfft(sig))','plt.plot(freq, spec)','plt.show()']},
+ {type:'typein',code:'w, v = np.linalg.__(A)   # eigenvalues & vectors',a:'eig'},
+],
+12:[
+ {type:'gap',code:'stats.norm.__(1.96)   # P(x < 1.96)',opts:['cdf','pdf','ppf','pmf'],a:'cdf'},
+ {type:'gap',code:'t, p = stats.__(group_a, group_b)',opts:['ttest_ind','compare','ztest','diff'],a:'ttest_ind'},
+ {type:'order',lines:['rng = np.random.default_rng(0)','means = rng.random((5000, 30)).mean(axis=1)','plt.hist(means, bins=40)','plt.show()']},
+ {type:'typein',code:'r, p = stats.__(x, y)   # linear correlation',a:'pearsonr'},
+],
+13:[
+ {type:'gap',code:'df["rev"] = df["rev"].fillna(df["rev"].__())',opts:['mean','none','zero','drop'],a:'mean'},
+ {type:'gap',code:'df["month"] = df.date.__.month',opts:['dt','str','time','cal'],a:'dt'},
+ {type:'order',lines:['monthly = ts.resample("ME").mean()','plt.bar(range(len(monthly)), monthly.values)','plt.title("Monthly averages")','plt.show()']},
+ {type:'typein',code:'by_store = sales.__("store")["revenue"].mean()',a:'groupby'},
+],
+};
