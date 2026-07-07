@@ -56,9 +56,21 @@ def __grab_figs():
     import matplotlib.pyplot as plt, io, base64
     out = []
     for n in plt.get_fignums():
-        buf = io.BytesIO()
-        plt.figure(n).savefig(buf, format='png', dpi=110, bbox_inches='tight')
-        out.append(base64.b64encode(buf.getvalue()).decode())
+        f = plt.figure(n)
+        done = False
+        try:
+            sbuf = io.StringIO()
+            f.savefig(sbuf, format='svg', bbox_inches='tight')
+            svg = sbuf.getvalue()
+            if len(svg) < 1500000:          # huge scatter clouds fall back to PNG
+                out.append(['svg', svg])
+                done = True
+        except Exception:
+            pass
+        if not done:
+            buf = io.BytesIO()
+            f.savefig(buf, format='png', dpi=110, bbox_inches='tight')
+            out.append(['png', base64.b64encode(buf.getvalue()).decode()])
     plt.close('all')
     return out
 `);
@@ -95,7 +107,7 @@ def __grab_figs():
         if(cut>0)err='Traceback (most recent call last):\n  '+err.slice(cut);
       }
       let figs=[];
-      try{const proxy=py.runPython('__grab_figs()');figs=proxy.toJs();proxy.destroy&&proxy.destroy();}catch(e){}
+      try{const proxy=py.runPython('__grab_figs()');figs=proxy.toJs({depth:2});proxy.destroy&&proxy.destroy();}catch(e){}
       let plotly=[];
       try{py.runPython("__setup_plotly()");const pj=py.runPython("import json as _j; _j.dumps(__plotly_figs)");plotly=JSON.parse(pj);}catch(e){}
       const out=stdoutBuf.join('\n');
