@@ -7,6 +7,8 @@
 **Learn Python, NumPy, SciPy, Pandas & Matplotlib — with a real Python running inside the app.**
 A beautiful Duolingo-style course with runnable examples, quizzes, stars and XP. Fully trilingual: **English · Deutsch · فارسی**.
 
+[![Open the app](https://img.shields.io/badge/▶_Open_the_app-Live-25b06e?style=for-the-badge)](https://bluerrror.github.io/python-trainer/)
+&nbsp;
 ![PWA](https://img.shields.io/badge/PWA-installable-5566d6?style=for-the-badge)
 ![Python in browser](https://img.shields.io/badge/CPython-in_your_browser-4b8bbe?style=for-the-badge)
 ![Trilingual](https://img.shields.io/badge/EN·DE·FA-trilingual-2bb5a0?style=for-the-badge)
@@ -45,6 +47,17 @@ A beautiful Duolingo-style course with runnable examples, quizzes, stars and XP.
 &nbsp;
 <img src="docs/screen-home-fa.png" width="200" alt="Persian (RTL)" />
 </div>
+
+## 🚀 Install on your iPhone (≈2 minutes)
+
+1. Open **Safari** and go to **[bluerrror.github.io/python-trainer](https://bluerrror.github.io/python-trainer/)**.
+2. Tap the **Share** button (□↑) → **Add to Home Screen** → **Add**.
+
+You get a **"Py" icon** that opens fullscreen. Lessons & quizzes work offline; the first ▶ Run needs internet once.
+
+## 🤖 Install on Android
+
+Download **[python-trainer.apk](https://github.com/Bluerrror/python-trainer/releases/latest/download/python-trainer.apk)** (from [Releases](https://github.com/Bluerrror/python-trainer/releases)), open it on your phone and allow the install. Fully native — no browser bar.
 
 ## 💻 Run locally
 
