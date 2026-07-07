@@ -25,8 +25,15 @@
       const py=await loadPyodide({indexURL:CDN});
       py.setStdout({batched:s=>stdoutBuf.push(s)});
       py.setStderr({batched:s=>stdoutBuf.push(s)});
-      // force the AGG backend so matplotlib renders to PNG bytes we can show
-      py.runPython("import os\nos.environ['MPLBACKEND']='AGG'");
+      // force the AGG backend so matplotlib renders to PNG bytes we can show,
+      // and silence noisy library warnings that only confuse learners
+      py.runPython(
+        "import os, warnings\n"+
+        "os.environ['MPLBACKEND']='AGG'\n"+
+        "warnings.filterwarnings('ignore', message='(?s).*[Pp]yarrow.*')\n"+
+        "warnings.filterwarnings('ignore', message='(?s).*non-GUI backend.*')\n"+
+        "warnings.filterwarnings('ignore', message='(?s).*cannot show the figure.*')\n"+
+        "warnings.filterwarnings('ignore', category=FutureWarning, message='(?s).*deprecated.*')");
       py.runPython(`
 def __grab_figs():
     import sys
