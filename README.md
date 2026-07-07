@@ -41,7 +41,7 @@ A beautiful Duolingo-style course with runnable examples, quizzes, stars and XP.
 <div align="center">
 <img src="docs/screen-home.png" width="200" alt="Course" />
 &nbsp;
-<img src="docs/screen-lesson.png" width="200" alt="Lesson with runnable code" />
+<img src="docs/screen-lesson.png" width="200" alt="Interactive lesson step" />
 &nbsp;
 <img src="docs/screen-playground.png" width="200" alt="Playground" />
 &nbsp;
