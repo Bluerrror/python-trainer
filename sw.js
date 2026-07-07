@@ -1,8 +1,8 @@
 /* Python Trainer service worker — app shell + Pyodide runtime cache */
-const CACHE = 'python-trainer-v6';
+const CACHE = 'python-trainer-v7';
 const PYCACHE = 'pyodide-cache-v1';
-const ASSETS = ['./','./index.html','./content.js','./runner.js','./manifest.webmanifest',
-  './icon-192.png','./icon-512.png','./apple-touch-icon.png','./fonts/nunito.woff2'];
+const ASSETS = ['./','./index.html','./src/content.js','./src/runner.js','./manifest.webmanifest',
+  './assets/icons/icon-192.png','./assets/icons/icon-512.png','./assets/icons/apple-touch-icon.png','./assets/fonts/nunito.woff2'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));

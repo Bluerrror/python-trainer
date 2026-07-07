@@ -70,7 +70,7 @@ python3 -m http.server 8000     # then open http://localhost:8000
 
 ## 🛠️ Tech
 
-- Vanilla HTML/CSS/JS — no build step. `index.html` (engine + UI), `content.js` (trilingual course), `runner.js` (Pyodide bridge), `sw.js` (offline caching incl. a cache-first Pyodide runtime cache).
+- Vanilla HTML/CSS/JS — no build step. `index.html` (engine + UI), `src/content.js` (trilingual course), `src/runner.js` (Pyodide bridge), `sw.js` (offline caching incl. a cache-first Pyodide runtime cache).
 - Sister apps: [Deutsch Trainer](https://github.com/Bluerrror/deutsch-trainer) · [English Trainer](https://github.com/Bluerrror/english-trainer)
 
 ## 📄 License
