@@ -39,13 +39,13 @@ A beautiful Duolingo-style course with runnable examples, quizzes, stars and XP.
 ## 📱 Screenshots
 
 <div align="center">
-<img src="docs/screen-home.png" width="200" alt="Course" />
+<img src="docs/app-home-v2.png" width="200" alt="Course" />
 &nbsp;
-<img src="docs/screen-lesson.png" width="200" alt="Interactive lesson step" />
+<img src="docs/app-lesson-v2.png" width="200" alt="Interactive lesson step" />
 &nbsp;
-<img src="docs/screen-playground.png" width="200" alt="Playground" />
+<img src="docs/app-playground-v2.png" width="200" alt="Playground" />
 &nbsp;
-<img src="docs/screen-home-fa.png" width="200" alt="Persian (RTL)" />
+<img src="docs/app-home-fa-v2.png" width="200" alt="Persian (RTL)" />
 </div>
 
 ## 🚀 Install on your iPhone (≈2 minutes)
